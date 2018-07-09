@@ -302,8 +302,14 @@ font-size:400%
             .attr("font-family", "helvetica")
             .attr("font-size", fontSize(i))
             .on("click", function(d,i) { 
-            	 if (isPrime(i + 1)) {
-                    window.open("http://deepangel.media.mit.edu"); 
+            	 if (i%18 == 0) {
+                    window.open("https://docs.google.com/document/d/1FTIWfSra_-DiTSHOSlsEVrgkhHPqMqVzVFpiJHbC_kA/edit?usp=sharing"); 
+                } else  if (i%12 == 0) {
+                    window.open("http://instagram.com/directory.of.worlds"); 
+                }  else  if (i%15 == 0) {
+                    window.open("https://www.sbnation.com/a/17776-football"); 
+                }  else  if (i%11 == 0) {
+                    window.open("https://cultural-discourse.com/on-hypermodernity/"); 
                 } 
             })
             .attr("font-weight", 900)
