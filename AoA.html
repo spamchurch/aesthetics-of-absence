@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ulam Spiral with D3.js</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js" charset="utf-8"></script>
+    <style type="text/css">
+.inner {
+  position: absolute;
+}
+</style>
+</head>
+<body bgcolor="black">
+
+	<div class = "outer">
+    <div id="graph" style="margin-left: auto; margin-right: auto; z-index: 10" class = "inner"></div>
+      <div class = "inner" style= "color:white; margin-left:35%; margin-top:15%; z-index:-10"><div id = "label" style = "font-size:400%; ">aesthetics <br>of absence</div> 
+      <br>
+  the movement | the algorithm | the philosophy</div>
+     <canvas id="content" class = "inner"></canvas>
+
+ </div>
+</body>
+<script>
+    var width =  window.innerWidth;
+    var height =  window.innerHeight;
+    var svg = d3.select("#graph").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    var dx = 30;
+    var dy = 10;
+    x0 = width / 2;
+    y0 = height / 2;
+    var size = 100;
+
+    function generateBaseArray(n) {
+        var result = [];
+        for (var i = 1; i < n; i++) {
+            result.push(i);
+            result.push(i);
+            result.push(-i);
+            result.push(-i);
+        }
+        return result;
+    }
+
+    var cornerCoordsForX = generateBaseArray(size);
+    var cornerCoordsForY = generateBaseArray(size);
+    cornerCoordsForX.unshift(0);
+    cornerCoordsForY.unshift(0, 0);
+
+    var Position = function (x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    var graphData = [];
+    for (var i = 0; i < size; i++) {
+        if (graphData.length > 2) {
+            var last = graphData[graphData.length - 1];
+            if (last.x > cornerCoordsForX[i]) {
+                var dif = last.x - cornerCoordsForX[i];
+                for (var j = 1; j < dif; j++) {
+                    graphData.push(new Position(last.x - j, cornerCoordsForY[i]));
+                }
+            }
+            if (last.x < cornerCoordsForX[i]) {
+                var dif = last.x - cornerCoordsForX[i];
+                for (var j = 1; j < -dif; j++) {
+                    graphData.push(new Position(last.x + j, cornerCoordsForY[i]));
+                }
+            }
+            if (last.y > cornerCoordsForY[i]) {
+                var dif = last.y - cornerCoordsForY[i];
+                for (var j = 1; j < dif; j++) {
+                    graphData.push(new Position(cornerCoordsForX[i], last.y - j));
+                }
+            }
+            if (last.y < cornerCoordsForY[i]) {
+                var dif = last.y - cornerCoordsForY[i];
+                for (var j = 1; j < -dif; j++) {
+                    graphData.push(new Position(cornerCoordsForX[i], last.y + j));
+                }
+            }
+        }
+        graphData.push(new Position(cornerCoordsForX[i], cornerCoordsForY[i]));
+    }
+
+    var primes = [];
+    function isPrime(n) {
+        if (n == 1) return false;
+        var checkPoint = Math.sqrt(n);
+        for (var i = 0; primes[i] <= checkPoint; i++) {
+            if (n % primes[i] == 0) {
+                return false;
+            }
+        }
+        primes.push(n);
+        return true;
+    }
+
+    function fontSize(i) {
+        if (i > 998) {
+            return "8px";
+        } else if (i > 98) {
+            return "9px";
+        } else if (i > 8) {
+            return "10px";
+        } else {
+            return "11px";
+        }
+    }
+
+    var text = svg.selectAll("text")
+            .data(graphData)
+            .enter()
+            .append("text");
+
+    var textLabels = text
+            .attr("x", function (d) {
+                return d.x * dx + width / 2;
+            })
+            .attr("y", function (d) {
+                return d.y * dy + height / 2;
+            })
+            .text(function (d, i) {
+                if (i%7 == 0) {
+                    return "void";
+                } else if (isPrime(i+1)) {
+                    return "erasure";
+                } else {
+                    return "absence";
+                }
+            })
+            .attr("text-anchor", "middle")
+            .attr("font-family", "helvetica")
+            .attr("font-size", fontSize(i))
+            .on("click", function(d,i) { 
+            	 if (isPrime(i + 1)) {
+                    window.open("http://deepangel.media.mit.edu"); 
+                } 
+            })
+            .attr("font-weight", 900)
+            .attr("fill", function (d, i) {
+                if (isPrime(i + 1)) {
+                    return "black";
+                } else {
+                    return "black";
+                }
+            });
+
+</script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+
+  <script>
+var context = document.getElementById('content').getContext('2d');
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+var size = d3.min([width, height]);
+
+d3.select('#content')
+  .attr('width', width + 'px')
+  .attr('height', height + 'px');
+
+context.lineWidth = 0.4;
+context.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+
+var projection = d3.geoOrthographic()
+  .scale(0.45 * size)
+  .translate([0.5 * width, 0.5 * height]);
+
+var geoGenerator = d3.geoPath()
+  .projection(projection)
+  .context(context);
+
+var geojson = {type: 'Feature', geometry: {type: 'LineString', coordinates: []}};
+function rndLon() {return -180 + Math.random() * 360;}
+function rndLat() {return -90 + Math.random() * 180;}
+function addPoint() {geojson.geometry.coordinates.push([rndLon(), rndLat()])}
+
+function update(t) {
+  if(geojson.geometry.coordinates.length < 6000)
+    addPoint();
+
+  projection.rotate([t / 1000]);
+
+  context.clearRect(0, 0, width, height);
+  context.beginPath();
+  geoGenerator(geojson);
+  context.stroke();
+
+  window.requestAnimationFrame(update);
+}
+
+window.requestAnimationFrame(update);
+
+  </script>
+</html>
