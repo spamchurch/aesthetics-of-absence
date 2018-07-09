@@ -12,11 +12,96 @@ a{
       text-decoration: none;
       font-size: 200%;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .text{
+        margin-top:85%;
+        margin-left:35%; 
+        font-size:50% 
+    }
+    .header{
+margin-top:65%;
+margin-left:35%;  
+font-size:800%
+    }
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .text{
+        margin-top:85%;
+        margin-left:35%;  
+        font-size:50%
+    }
+    .header{
+margin-top:65%;
+margin-left:400%;  
+
+    }
+} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .text{
+        margin-top:85%;
+        margin-left:35%;  
+        font-size:80%
+    }
+    .header{
+margin-top:65%;
+margin-left:35%;  
+font-size:500%
+    }
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .text{
+        margin-top:35%;
+        margin-left:35%; 
+        font-size:50%
+    }
+
+    .header{
+margin-top:15%;
+margin-left:35%; 
+font-size:400%
+    }
+}
+
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .text{
+        margin-top:35%;
+        margin-left:35%; 
+        font-size: 50%
+    }
+
+    .header{
+margin-top:15%;
+margin-left:35%; 
+font-size:400%
+    }
+}
+
 </style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111525761-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-111525761-4');
+</script>
 </head>
 <body bgcolor="black">
-       <div style = " font-size: 50%;z-index:100; margin-left:35%; margin-top:35%;" class ='inner'><a href = "http://www.spam.church">the movement </a><br> <a href = "http://deepangel.media.mit.edu">the algorithm </a> <br> <a href = "https://en.wikipedia.org/wiki/Walter_Benjamin">the philosophy </a></div>
- <div class = "inner" style= "color:white; margin-left:35%; margin-top:15%; font-size:400%; z-index:0;">aesthetics <br>of absence <br> <br>
+       <div style = " ;z-index:100; " class ='inner text'>
+        <a href = "http://www.spam.church">the movement </a><br> <a href = "http://deepangel.media.mit.edu">the algorithm </a> <br> <a href = "https://en.wikipedia.org/wiki/Walter_Benjamin">the philosophy </a>
+    </div>
+ <div class = "inner header" style= "color:white; ; z-index:0;">aesthetics <br>of absence <br> <br>
        
       </div> 
 	<div class = "outer">
@@ -171,7 +256,7 @@ d3.select('#content')
   .attr('width', width + 'px')
   .attr('height', height + 'px');
 
-context.lineWidth = 0.4;
+context.lineWidth = 0.3;
 context.strokeStyle = 'rgba(255, 255, 255, 0.15)';
 
 var projection = d3.geoOrthographic()
@@ -191,7 +276,7 @@ function update(t) {
   if(geojson.geometry.coordinates.length < 6000)
     addPoint();
 
-  projection.rotate([t / 1000]);
+  projection.rotate([t / 800]);
 
   context.clearRect(0, 0, width, height);
   context.beginPath();
